@@ -14,6 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {emailSignInStart} from '../../redux/user/user.actions';
 import {connect} from 'react-redux';
+import useForm from './useForm';
+import validateInfo from './validateInfo';
 
 function Copyright() {
   return (
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn({emailSignInStart}) {
 
-
+  const {handleChange,handleSubmit,errors}=useForm(validateInfo,emailSignInStart)
   
 
   const classes = useStyles();
@@ -66,7 +68,7 @@ function SignIn({emailSignInStart}) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -77,6 +79,9 @@ function SignIn({emailSignInStart}) {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleChange}
+            error={errors.email && true}
+            helperText={errors.email && errors.email}
           />
           <TextField
             variant="outlined"
@@ -88,6 +93,9 @@ function SignIn({emailSignInStart}) {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleChange}
+            error={errors.password && true}
+            helperText={errors.password && errors.password}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -125,7 +133,7 @@ function SignIn({emailSignInStart}) {
 
 
 const mapDispatchToProps=dispatch=>({
-  emailSignInStart:(email,password)=>dispatch(emailSignInStart(email,password))
+  emailSignInStart:(email,password)=>dispatch(emailSignInStart({email,password}))
 })
 
 export default connect(null,mapDispatchToProps)(SignIn);

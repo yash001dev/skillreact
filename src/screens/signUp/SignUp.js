@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp({ signUpStart }) {
+ function SignUp({ signUpStart }) {
 
   const { values, errors, handleChange, handleSubmit } = useFrom(validateInfo, signUpStart)
   const [condition, setCondition] = useState(false);
@@ -81,6 +81,7 @@ export default function SignUp({ signUpStart }) {
                 autoFocus
                 error={errors.companyName && true}
                 helperText={errors.companyName && errors.companyName}
+                value={values.companyName}
                 onChange={handleChange}
               />
             </Grid>
@@ -95,6 +96,7 @@ export default function SignUp({ signUpStart }) {
                 autoComplete="lname"
                 error={errors.brandName && true}
                 helperText={errors.brandName && errors.brandName}
+                value={values.brandName}
                 onChange={handleChange}
               />
             </Grid>
@@ -111,6 +113,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.crn && true}
                 helperText={errors.crn && errors.crn}
                 onChange={handleChange}
+                value={values.crn}
               />
             </Grid>
 
@@ -126,6 +129,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.categoryName && true}
                 helperText={errors.categoryName && errors.categoryName}
                 onChange={handleChange}
+                value={values.categoryName}
               />
             </Grid>
 
@@ -141,6 +145,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.mobileNumber && true}
                 helperText={errors.mobileNumber && errors.mobileNumber}
                 onChange={handleChange}
+                values={values.mobileNumber}
               />
             </Grid>
 
@@ -157,6 +162,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.email && true}
                 helperText={errors.email && errors.email}
                 onChange={handleChange}
+                values={values.email}
               />
             </Grid>
 
@@ -172,6 +178,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.address && true}
                 helperText={errors.address && errors.address}
                 onChange={handleChange}
+                values={values.address}
               />
             </Grid>
 
@@ -187,6 +194,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.state && true}
                 helperText={errors.state && errors.state}
                 onChange={handleChange}
+                values={values.state}
               />
             </Grid>
 
@@ -202,6 +210,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.city && true}
                 helperText={errors.city && errors.city}
                 onChange={handleChange}
+                value={values.city}
               />
             </Grid>
 
@@ -217,6 +226,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.area && true}
                 helperText={errors.area && errors.area}
                 onChange={handleChange}
+                value={values.area}
               />
             </Grid>
 
@@ -232,6 +242,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.postalCode && true}
                 helperText={errors.postalCode && errors.postalCode}
                 onChange={handleChange}
+                value={values.postalCode}
               />
             </Grid>
 
@@ -247,6 +258,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.ccno && true}
                 helperText={errors.ccno && errors.ccno}
                 onChange={handleChange}
+                value={values.ccno}
               />
             </Grid>
 
@@ -264,6 +276,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.password && true}
                 helperText={errors.password && errors.password}
                 onChange={handleChange}
+                value={values.password}
               />
             </Grid>
 
@@ -280,6 +293,7 @@ export default function SignUp({ signUpStart }) {
                 error={errors.cpassword && true}
                 helperText={errors.cpassword && errors.cpassword}
                 onChange={handleChange}
+                value={values.cpassword}
               />
             </Grid>
 

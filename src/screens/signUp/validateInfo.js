@@ -79,7 +79,7 @@ export default function validateInfo(values){
     }
 
     //Compare Password
-    if(values.password===values.cpassword){
+    if(values.password!==values.cpassword){
         errors.cpassword="Password Don't Match"
     }
 
