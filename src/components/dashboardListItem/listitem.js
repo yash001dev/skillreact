@@ -9,10 +9,43 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import { Link } from 'react-router-dom';
+
+const NavItems = [
+  {
+    icon: <DashboardIcon />,
+    name: 'Dashboard',
+    path: '/home',
+  },
+  {
+    icon: <DashboardIcon />,
+    name: 'Dashboard',
+    path: '/demo',
+  },
+  {
+    icon: <DashboardIcon />,
+    name: 'Dashboard',
+    path: '/demo',
+  },
+  {
+    icon: <DashboardIcon />,
+    name: 'Dashboard',
+    path: '/demo',
+  },
+];
 
 export const mainListItems = (
-  <div>
-    <ListItem button>
+  <>
+    <div>
+      {NavItems.map((item) => {
+        return <ListItem button component={Link} to={item.path}>
+          <ListItemIcon>
+            {item.icon}
+          </ListItemIcon>
+          <ListItemText primary={item.name} />
+        </ListItem>
+      })}
+      {/* <ListItem button component={Link} to="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
@@ -41,9 +74,9 @@ export const mainListItems = (
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Integrations" />
-    </ListItem>
-  </div>
-);
+    </ListItem> */}
+    </div>
+  </>);
 
 export const secondaryListItems = (
   <div>

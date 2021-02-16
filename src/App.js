@@ -19,15 +19,17 @@ function App({checkUserSession,currentUser}) {
         <Switch>
           <Route exact path="/signin" component={SignIn}/>
           {console.log("CURRENTUSER:",currentUser)}
-          <Route exact={true} path="/" render={()=>currentUser?(<MainDashboard/>):(<SignIn/>)}/>
-          <Route exact path="/signup" component={SignUp}/>
           <Route 
           exact 
           path="/dashboard"
           render={()=>currentUser?
             (<MainDashboard />):(<Redirect to="/" />,console.log("Second One Is Called"))
           } 
+            
          />
+          <Route exact={true} path="/" render={()=>currentUser?(<Redirect to="/dashboard" />):(<SignIn/>)}/>
+          <Route exact path="/signup" component={SignUp}/>
+          
 
         </Switch>
       </Router>
