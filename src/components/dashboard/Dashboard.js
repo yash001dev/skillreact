@@ -12,22 +12,25 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+// import Grid from '@material-ui/core/Grid';
+// import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import { connect } from 'react-redux';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../dashboardListItem/listitem';
-import Chart from '../chart/Chart';
-import Deposits from '../deposite/Deposits';
-import Orders from '../orders/Orders';
+// import Chart from '../chart/Chart';
+// import Deposits from '../deposite/Deposits';
+// import Orders from '../orders/Orders';
 import { signOutStart } from '../../redux/user/user.actions';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
 import {BrowserRouter as Router,Route} from 'react-router-dom';
 import Product from './../../screens/product/Product';
+// import Profile from './../infoscreen/Profile';
+import InfoScreen from './../infoscreen/InfoScreen';
+
 
 function Copyright() {
   return (
@@ -183,7 +186,8 @@ function Dashboard({ currentUser, hidden, signOutStart }) {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <Route path="/home" component={Product} />
+            <Route path="/home" exact component={Product} />
+            <Route path="/home/add" component={InfoScreen}/>
             <Box pt={4}>
               <Copyright />
             </Box>
