@@ -1,5 +1,6 @@
 import { act } from "react-dom/test-utils";
 import ProductActionTypes from "./product.types";
+import { returnProduct } from './product.utils';
 
 const INITIAL_STATE={
     collections:[],
@@ -27,7 +28,7 @@ const productReducer=(state=INITIAL_STATE,action)=>{
             return{
                 ...state,
                 isFetching:false,
-                collections:[...state.collections,action.payload]
+                collections:returnProduct(state.collections,action.payload)
             }
             
         case ProductActionTypes.ADD_ITEM_FAILURE:
