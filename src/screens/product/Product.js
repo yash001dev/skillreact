@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Product = ({collections,userData,syncProducts}) => {
   const classes = useStyles();
-  const [products] = useState(data);
+  // const [products] = useState(data);
 
 
   useEffect(()=>{
@@ -53,7 +53,7 @@ const Product = ({collections,userData,syncProducts}) => {
             container
             spacing={3}
           >
-            {products.map((product) => (
+            {collections.map((product) => (
               <Grid
                 item
                 key={product.id}

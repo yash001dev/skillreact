@@ -29,6 +29,18 @@ export const addItemFailure=error=>({
     payload:error
 });
 
+export const deleteItemStart=()=>({
+    type:ProductActionTypes.DELETE_ITEM_START,
+})
+export const deleteItemSuccess=(item)=>({
+    type:ProductActionTypes.DELETE_ITEM_SUCCESS,
+    payload:item
+})
+export const deleteItemFailure=(error)=>({
+    type:ProductActionTypes.FETCH_COLLECTIONS_FAILURE,
+    payload:error
+})
+
 
 
 //Async For FetchProduct
@@ -64,3 +76,16 @@ export const ProductCollectionsAddStart=(userData,userId)=>{
         })
     }
 }
+
+//Async For Delete
+export const ProductCollectionDelete=(userId,itemId)=>{
+    return dispatch=>{
+        dispatch(deleteItemStart());
+        console.log("DELETE ITEM START");
+        firebase.database().ref('companyData').child(userId+'/products/'+itemId)
+        .remove()
+        .then((data)=>dispatch(deleteItemSuccess(data)))
+        .catch((error)=>dispatch(deleteItemFailure(error)));
+    }
+}
+

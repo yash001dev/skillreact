@@ -9,7 +9,10 @@ import {
   Divider,
   Grid,
   Typography,
-  makeStyles
+  makeStyles,
+  CardActionArea,
+  CardActions,
+  Button
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -32,10 +35,13 @@ const ProductCard = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
+    <>
+   
+   <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
+    <CardActionArea>
       <CardContent>
         <Box
           display="flex"
@@ -54,7 +60,7 @@ const ProductCard = ({ className, product, ...rest }) => {
           gutterBottom
           variant="h4"
         >
-          {product.title}
+          {product.name}
         </Typography>
         <Typography
           align="center"
@@ -64,52 +70,21 @@ const ProductCard = ({ className, product, ...rest }) => {
           {product.description}
         </Typography>
       </CardContent>
+      </CardActionArea>
       <Box flexGrow={1} />
       <Divider />
-      <Box p={2}>
-        <Grid
-          container
-          justify="space-between"
-          spacing={2}
-        >
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <AccessTimeIcon
-              className={classes.statsIcon}
-              color="action"
-            />
-            <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
-            >
-              Updated 2hr ago
-            </Typography>
-          </Grid>
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <GetAppIcon
-              className={classes.statsIcon}
-              color="action"
-            />
-            <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
-            >
-              {product.totalDownloads}
-              {' '}
-              Downloads
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
+      
+       
+      <CardActions>
+        <Button size="small" color="primary">
+          Update
+        </Button>
+        <Button  size="small" color="primary">
+          Delete
+        </Button>
+      </CardActions>
     </Card>
-  );
+  </>);
 };
 
 ProductCard.propTypes = {

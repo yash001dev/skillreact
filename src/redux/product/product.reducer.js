@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 import ProductActionTypes from "./product.types";
-import { returnProduct } from './product.utils';
+import { returnProduct,deleteProduct } from './product.utils';
 
 const INITIAL_STATE={
     collections:[],
@@ -12,6 +12,7 @@ const productReducer=(state=INITIAL_STATE,action)=>{
     switch(action.type){
         case ProductActionTypes.ADD_ITEM_START:
         case ProductActionTypes.FETCH_COLLECTIONS_START:
+        case ProductActionTypes.DELETE_ITEM_START:
             return{
                 ...state,
                 isFetching:true
@@ -30,9 +31,17 @@ const productReducer=(state=INITIAL_STATE,action)=>{
                 isFetching:false,
                 collections:returnProduct(state.collections,action.payload)
             }
+        
+        case ProductActionTypes.DELETE_ITEM_SUCCESS:
+            return{
+                ...state,
+                isFetching:false,
+                collections:deleteProduct(state.collections,action.payload)
+            }
             
         case ProductActionTypes.ADD_ITEM_FAILURE:
-        case ProductActionTypes.FETCH_COLLECTIONS_FAILURE:    
+        case ProductActionTypes.FETCH_COLLECTIONS_FAILURE:
+        case ProductActionTypes.DELETE_ITEM_FAILURE:
             return{
                 ...state,
                 errorMessage:action.payload
