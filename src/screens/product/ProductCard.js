@@ -7,15 +7,23 @@ import {
   Card,
   CardContent,
   Divider,
-  Grid,
   Typography,
   makeStyles,
-  CardActionArea,
-  CardActions,
-  Button
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
 } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { Button, CardActionArea } from '@material-ui/core';
+import { CardActions } from '@material-ui/core';
+import useProductForm from './useProductForm';
+import { ProductCollectionDelete } from '../../redux/product/product.actions';
+import { connect } from 'react-redux';
+import {createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,13 +39,40 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const ProductCard = ({ className, product,userData,deleteData, ...rest }) => {
   const classes = useStyles();
+
+  const {deleteOpen,deleteHandleClickOpen,deleteHandleClickClose,handleDelete}=useProductForm(userData,deleteData)
 
   return (
     <>
-   
-   <Card
+    {/* //Delete Dialogue UI */}
+    <Dialog
+        open={deleteOpen}
+        onClose={deleteHandleClickClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure You Want to Delete?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={deleteHandleClickClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="primary">
+            Delete
+          </Button>  
+        </DialogActions>
+      </Dialog>
+
+    {/* //End Delete Dialogue UI */}
+
+
+    <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
@@ -79,12 +114,16 @@ const ProductCard = ({ className, product, ...rest }) => {
         <Button size="small" color="primary">
           Update
         </Button>
-        <Button  size="small" color="primary">
+        <Button onClick={()=>deleteHandleClickOpen(product.id)} size="small" color="primary">
           Delete
         </Button>
       </CardActions>
     </Card>
-  </>);
+
+
+
+    </>
+  );
 };
 
 ProductCard.propTypes = {
@@ -92,4 +131,13 @@ ProductCard.propTypes = {
   product: PropTypes.object.isRequired
 };
 
-export default ProductCard;
+const mapStateToProps=createStructuredSelector({
+  userData:selectCurrentUser,
+  
+});
+
+const mapDispatchToProps=dispatch=>({
+  deleteData:(userId,dataId)=>(dispatch(ProductCollectionDelete(userId,dataId)))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(ProductCard);

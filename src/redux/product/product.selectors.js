@@ -6,3 +6,8 @@ export const getLatestProduct=createSelector(
     [selectProduct],
     product=>product.collections
 )
+
+export const currentLoading=createSelector(
+    [selectProduct],
+    product=>product.isFetching
+)

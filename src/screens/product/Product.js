@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Container,
@@ -9,12 +9,12 @@ import { Pagination } from '@material-ui/lab';
 import Page from '../../components/Page';
 import Toolbar from './Toolbar';
 import ProductCard from './ProductCard';
-import data from './data';
 import { connect,} from 'react-redux';
-import { getLatestProduct } from './../../redux/product/product.selectors';
+import { currentLoading, getLatestProduct } from './../../redux/product/product.selectors';
 import { createStructuredSelector } from 'reselect';
 import { ProductCollectionsList } from './../../redux/product/product.actions';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,24 +25,29 @@ const useStyles = makeStyles((theme) => ({
   },
   productCard: {
     height: '100%'
+  },
+  progress:{
+    display: 'flex',
+    width:'100%',
+    height:'60vh',
+    justifyContent:'center',
+    alignItems:'center'
   }
 }));
 
 
 
-const Product = ({collections,userData,syncProducts}) => {
+const Product = ({collections,userData,syncProducts,currentLoading}) => {
   const classes = useStyles();
-  // const [products] = useState(data);
-
 
   useEffect(()=>{
     console.log("USERDATA:",userData.id)
     syncProducts(userData.id)
   },[]);
-
+  // const [products] = useState(data);
   return (
-    
-    <Page
+
+    currentLoading?( <CircularProgress />):(<Page
       className={classes.root}
       title="Products"
     >
@@ -81,13 +86,16 @@ const Product = ({collections,userData,syncProducts}) => {
           />
         </Box>
       </Container>
-    </Page>
+    </Page>)
+
+    
   );
 };
 
 const mapStateToProps=createStructuredSelector({
   collections:getLatestProduct,
-  userData:selectCurrentUser
+  userData:selectCurrentUser,
+  currentLoading:currentLoading,
 });
 
 const mapDispatchToProps=dispatch=>({

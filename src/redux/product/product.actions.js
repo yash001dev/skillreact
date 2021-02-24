@@ -69,7 +69,7 @@ export const ProductCollectionsAddStart=(userData,userId)=>{
         newReference.push(userData)
         .then((data)=>{
             console.log("Before Add Item Success")
-            dispatch(addItemSuccess(userData))
+            
         })
         .catch((error)=>{
             dispatch(addItemFailure(error))
@@ -84,7 +84,10 @@ export const ProductCollectionDelete=(userId,itemId)=>{
         console.log("DELETE ITEM START");
         firebase.database().ref('companyData').child(userId+'/products/'+itemId)
         .remove()
-        .then((data)=>dispatch(deleteItemSuccess(data)))
+        .then((data)=>{
+                dispatch(deleteItemSuccess(itemId))
+            }
+        )
         .catch((error)=>dispatch(deleteItemFailure(error)));
     }
 }

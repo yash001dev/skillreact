@@ -33,6 +33,7 @@ const productReducer=(state=INITIAL_STATE,action)=>{
             }
         
         case ProductActionTypes.DELETE_ITEM_SUCCESS:
+            console.log("DELETE ITEM WAS CALLED...");
             return{
                 ...state,
                 isFetching:false,

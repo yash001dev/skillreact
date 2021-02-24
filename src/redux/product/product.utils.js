@@ -10,8 +10,9 @@ export const returnProduct=(collection,incomingData)=>{
 }
 
 export const deleteProduct=(collection,dataId)=>{
-    const afterDeletionData=collection.forEach((data)=>{
-        return data.id!==collection.id
+    console.log("DATAID:",dataId);
+    const afterDeletionData=collection.filter((data)=>{
+        return data.id!==dataId
     })
     return afterDeletionData;
 }
