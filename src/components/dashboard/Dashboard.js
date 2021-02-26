@@ -30,6 +30,7 @@ import {BrowserRouter as Router,Route} from 'react-router-dom';
 import Product from './../../screens/product/Product';
 // import Profile from './../infoscreen/Profile';
 import InfoScreen from './../infoscreen/InfoScreen';
+import ProductForEdit from './../productEdit/InfoScreen';
 
 
 function Copyright() {
@@ -188,6 +189,7 @@ function Dashboard({ currentUser, hidden, signOutStart }) {
           <Container maxWidth="lg" className={classes.container}>
             <Route path="/home" exact component={Product} />
             <Route path="/home/add" component={InfoScreen}/>
+            <Route path="/home/edit/:id" component={ProductForEdit} />
             <Box pt={4}>
               <Copyright />
             </Box>

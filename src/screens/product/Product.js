@@ -56,7 +56,7 @@ const Product = ({collections,userData,syncProducts,currentLoading}) => {
             container
             spacing={3}
           >
-            {collections.map((product) => (
+            {collections.map((product,index) => (
               <Grid
                 item
                 key={product.id}
@@ -67,6 +67,7 @@ const Product = ({collections,userData,syncProducts,currentLoading}) => {
                 <ProductCard
                   className={classes.productCard}
                   product={product}
+                  index={index}
                 />
               </Grid>
             ))}

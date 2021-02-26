@@ -19,7 +19,6 @@ import {createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
 import useForm from './useForm';
 import validateInfo from './validateInfo';
-import Accept from './../videouploader/VideoUploader';
 
 
 const states = [
@@ -44,9 +43,8 @@ const useStyles = makeStyles(() => ({
 const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
   const classes = useStyles();
 
-  const {values,errors,handleChange,handleSubmit,acceptedFiles,acceptedFilesItems,getRootProps,getInputProps}=useForm(validateInfo,userData,addProduct)
-  const [videoFile, setVideoFile] = React.useState(null);
-  const [metadata, setMetadata] = React.useState(null);
+  const {values,errors,handleChange,handleSubmit}=useForm(validateInfo,userData,addProduct)
+
 
   return (
     <form
@@ -56,30 +54,9 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-
-
-      {videoFile && (
-        <video
-          controls={true}
-          width="250"
-          onLoadedMetadata={e => {
-            setMetadata({
-              videoHeight: e.target.videoHeight,
-              videoWidth: e.target.videoWidth,
-              duration: e.target.duration
-            });
-          }}
-        >
-          <source src={URL.createObjectURL(videoFile)} 
-            type="video/mp4" />
-        </video>
-      )}
-
-
-
       <Card>
         <CardHeader
-          subheader="The New Product Can Be Inserted"
+          subheader="Product can Be Edited"
           title="Product"
         />
         <Divider />
@@ -296,35 +273,7 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
                 helperText={errors.discount && errors.discount}
               />
             </Grid>
-
-            <Grid item md={12} xs={12}>
-                <section className="container">
-                {console.log("ACCEPTED FILE:")}
-                <div {...getRootProps({ className: "dropzone" })}>
-                  <input {...getInputProps()} />
-                  <p>Drag 'n' drop some files here, or click to select files</p>
-                  <em>(1 Only image file will be accepted)</em>
-                </div>
-                <aside>
-                  <h4>Accepted files</h4>
-                  <ul>{acceptedFilesItems}</ul>
-                </aside>
-              </section>
-            </Grid>
-
-            <Grid md={12} xs={12} >
-              <input
-              type="file"
-              onChange={e=>{
-                const file=e.target.files[0];
-                const size=e.target.files[0].size
-                console.log("SIZE:",size);
-                setVideoFile(file);
-              }} />
-            </Grid>
-
-
-          
+            
             
             
           </Grid>
@@ -354,10 +303,11 @@ ProfileDetails.propTypes = {
 
 const mapStateToProps=createStructuredSelector({
   userData:selectCurrentUser,
+  
 });
 
 const mapDispatchToProps=dispatch=>({
-  addProduct:(collection,userId,imageInfo)=>dispatch(ProductCollectionsAddStart(collection,userId,imageInfo))
+  addProduct:(collection,userId)=>dispatch(ProductCollectionsAddStart(collection,userId))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ProfileDetails);

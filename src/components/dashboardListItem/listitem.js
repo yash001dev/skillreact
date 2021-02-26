@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 const NavItems = [
   {
     icon: <DashboardIcon />,
-    name: 'Dashboard',
+    name: 'Products',
     path: '/home',
   },
   {

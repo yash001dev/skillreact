@@ -22,6 +22,7 @@ import { ProductCollectionDelete } from '../../redux/product/product.actions';
 import { connect } from 'react-redux';
 import {createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { useLocation, useHistory } from 'react-router-dom';
 
 
 
@@ -39,10 +40,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductCard = ({ className, product,userData,deleteData, ...rest }) => {
+const ProductCard = ({ className, product,userData,deleteData,index, ...rest }) => {
   const classes = useStyles();
 
   const {deleteOpen,deleteHandleClickOpen,deleteHandleClickClose,handleDelete}=useProductForm(userData,deleteData)
+  const location=useLocation();
+  const history=useHistory();
+  const handleUpdate=(index)=>{
+    console.log("HISTORY:",history);
+    history.push(`${location.pathname}/edit/${index}`)
+  }
 
   return (
     <>
@@ -111,7 +118,7 @@ const ProductCard = ({ className, product,userData,deleteData, ...rest }) => {
       
        
       <CardActions>
-        <Button size="small" color="primary">
+        <Button onClick={()=>handleUpdate(product.id)} size="small" color="primary">
           Update
         </Button>
         <Button onClick={()=>deleteHandleClickOpen(product.id)} size="small" color="primary">
