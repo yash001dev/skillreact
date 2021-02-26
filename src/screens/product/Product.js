@@ -35,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-
 const Product = ({collections,userData,syncProducts,currentLoading}) => {
   const classes = useStyles();
 

@@ -19,6 +19,7 @@ import {createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
 import useForm from './useForm';
 import validateInfo from './validateInfo';
+import Accept from './../videouploader/VideoUploader';
 
 
 const states = [
@@ -43,7 +44,7 @@ const useStyles = makeStyles(() => ({
 const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
   const classes = useStyles();
 
-  const {values,errors,handleChange,handleSubmit}=useForm(validateInfo,userData,addProduct)
+  const {values,errors,handleChange,handleSubmit,acceptedFiles,acceptedFilesItems,getRootProps,getInputProps}=useForm(validateInfo,userData,addProduct)
 
 
   return (
@@ -273,7 +274,21 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
                 helperText={errors.discount && errors.discount}
               />
             </Grid>
-            
+
+            <Grid item md={12} xs={12}>
+          <section className="container">
+          {console.log("ACCEPTED FILE:")}
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input {...getInputProps()} />
+            <p>Drag 'n' drop some files here, or click to select files</p>
+            <em>(1 Only image file will be accepted)</em>
+          </div>
+          <aside>
+            <h4>Accepted files</h4>
+            <ul>{acceptedFilesItems}</ul>
+          </aside>
+        </section>
+            </Grid>
             
             
           </Grid>
@@ -306,7 +321,7 @@ const mapStateToProps=createStructuredSelector({
 });
 
 const mapDispatchToProps=dispatch=>({
-  addProduct:(collection,userId)=>dispatch(ProductCollectionsAddStart(collection,userId))
+  addProduct:(collection,userId,imageInfo)=>dispatch(ProductCollectionsAddStart(collection,userId,imageInfo))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ProfileDetails);
