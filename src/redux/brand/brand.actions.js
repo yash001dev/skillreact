@@ -3,59 +3,73 @@ import firebase from '../../utils/config';
 import {storage} from '../../utils/config';
 
 export const fetchBrandStart=()=>({
-    type:BrandActionTypes.FETCH_COLLECTIONS_START,
+    type:BrandActionTypes.FETCH_BRAND_START,
 });
 
 export const fetchBrandSuccess=data=>({
-    type:BrandActionTypes.FETCH_COLLECTIONS_SUCCESS,
+    type:BrandActionTypes.FETCH_BRAND_SUCCESS,
     payload:data
 });
 
 export const fetchBrandFailure=error=>({
-    type:BrandActionTypes.FETCH_COLLECTIONS_FAILURE,
+    type:BrandActionTypes.FETCH_BRAND_FAILURE,
     payload:error
 })
 
-export const addItemStart=()=>({
-    type:BrandActionTypes.ADD_ITEM_START,
+export const addBrandStart=()=>({
+    type:BrandActionTypes.ADD_BRAND_START,
 });
 
-export const addItemSuccess=item=>({
-    type:BrandActionTypes.ADD_ITEM_SUCCESS,
+export const addBrandSuccess=item=>({
+    type:BrandActionTypes.ADD_BRAND_SUCCESS,
     payload:item
 });
 
-export const addItemFailure=error=>({
-    type:BrandActionTypes.ADD_ITEM_SUCCESS,
+export const addBrandFailure=error=>({
+    type:BrandActionTypes.ADD_BRAND_SUCCESS,
     payload:error
 });
 
-export const deleteItemStart=()=>({
-    type:BrandActionTypes.DELETE_ITEM_START,
+export const deleteBrandStart=()=>({
+    type:BrandActionTypes.DELETE_BRAND_START,
 })
-export const deleteItemSuccess=(item)=>({
-    type:BrandActionTypes.DELETE_ITEM_SUCCESS,
+export const deleteBrandSuccess=(item)=>({
+    type:BrandActionTypes.DELETE_BRAND_SUCCESS,
     payload:item
 })
-export const deleteItemFailure=(error)=>({
-    type:BrandActionTypes.FETCH_COLLECTIONS_FAILURE,
+export const deleteBrandFailure=(error)=>({
+    type:BrandActionTypes.DELETE_BRAND_FAILURE,
     payload:error
 })
+
+export const editCollectionStart = () => ({
+    type: ProductActionTypes.EDIT_COLLECTIONS_START,
+  });
+  
+export const editCollectionSuccess = (data) => ({
+    type: ProductActionTypes.EDIT_COLLECTIONS_SUCCESS,
+    payload: data,
+});
+  
+export const editCollectionFailure = (error) => ({
+    type: ProductActionTypes.EDIT_COLLECTIONS_FAILURE,
+    payload: error,
+});
 
 
 
 //Async For FetchProduct
-export const ProductCollectionsList=(userId)=>{
+export const BrandCollectionsList=(userId)=>{
     return dispatch=>{
-        const newReference=firebase.database().ref('companyData').child(userId+'/products')
-        dispatch(fetchCollectionStart());
+        const newReference=firebase.database().ref('companyData').child(userId+'/brands')
+        dispatch(fetchBrandStart());
         newReference.once('value').then(snapshot=>{
             let tempData=snapshot.val()
             console.log("TEMPDATA:",tempData)
-            dispatch(fetchCollectionSuccess(tempData));
+            dispatch(fetchBrandSuccess(tempData));
         })
         .catch((error)=>{
-            dispatch(fetchCollectionFailure(error))
+            dispatch(fetchBrandFailure(error))
         })
     }
 }
@@ -70,7 +84,7 @@ export const ProductCollectionsAddStart=(userData,userId,imageInfo,videoInfo)=>{
     return async dispatch=>{
         const mediaData=[];
         const mediaPath=[];
-        const newReference=firebase.database().ref('companyData').child(userId+'/products')
+        const newReference=firebase.database().ref('companyData').child(userId+'/brands')
         dispatch(addItemStart());
         console.log("ADD ITEM START:",userId);
         const uploadImage=storage.ref(`images/${imageInfo.map(image=>image.name)}`).put(imageInfo);
@@ -111,37 +125,12 @@ export const ProductCollectionsAddStart=(userData,userId,imageInfo,videoInfo)=>{
 }
 
 
-//Async function for mediaFile
-// function uploadImageAsPromise (imageFile) {
-//     return new Promise(function (resolve, reject) {
-//         var storageRef = firebase.storage().ref(fullDirectory+"/"+imageFile.name);
 
-//         //Upload file
-//         var task = storageRef.put(imageFile);
-
-//         //Update progress bar
-//         task.on('state_changed',
-//             function progress(snapshot){
-//                 var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-//                 uploader.value = percentage;
-//             },
-//             function error(err){
-
-//             },
-//             function complete(){
-//                 var downloadURL = task.snapshot.downloadURL;
-//             }
-//         );
-//     });
-// }
-
-
-//Async For Delete
-export const ProductCollectionDelete=(userId,itemId)=>{
+export const BrandCollectionDelete=(userId,itemId)=>{
     return dispatch=>{
-        dispatch(deleteItemStart());
+        dispatch(deleteBrandStart());
         console.log("DELETE ITEM START");
-        firebase.database().ref('companyData').child(userId+'/products/'+itemId)
+        firebase.database().ref('companyData').child(userId+'/brands/'+itemId)
         .remove()
         .then((data)=>{
                 dispatch(deleteItemSuccess(itemId))
@@ -149,5 +138,27 @@ export const ProductCollectionDelete=(userId,itemId)=>{
         )
         .catch((error)=>dispatch(deleteItemFailure(error)));
     }
+
 }
 
+
+export const ProductCollectionsEditStart = (userId, modifiedData, itemId) => {
+    return (dispatch) => {
+      console.log("USERID:", modifiedData);
+      const newReference = firebase
+        .database()
+        .ref("companyData")
+        .child(userId + "/products" + itemId);
+      dispatch(editCollectionStart());
+      console.log("ADD ITEM START:", userId);
+      newReference
+        .update(modifiedData)
+        .then((data) => {
+          console.log("Item Edit SuccessFull");
+          dispatch(editCollectionSuccess({ modifiedData, itemId }));
+        })
+        .catch((error) => {
+          dispatch(editCollectionFailure(error));
+        });
+    };
+  };

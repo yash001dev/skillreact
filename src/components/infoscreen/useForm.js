@@ -86,7 +86,7 @@ const useForm = (validateInfo, userData, addProduct,) => {
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       const id = userData.id;
-      addProduct(values, id,readyForUploadFile,readyForUploadFile);
+      addProduct(values, id,readyForUploadFile,videoFile);
       // const objectArray=Object.entries(values);
       // objectArray.forEach(([key,values])=>{
       //     setValue({...values,[key]:''})
