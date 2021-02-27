@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { product_Field } from './../../auto/productField';
@@ -14,37 +14,32 @@ import{
   makeStyles
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { ProductCollectionsAddStart } from '../../redux/product/product.actions';
+import { ProductCollectionsEditStart } from '../../redux/product/product.actions';
 import {createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
 import useForm from './useForm';
 import validateInfo from './validateInfo';
+import { getLatestProduct } from './../../redux/product/product.selectors';
+import { useParams } from 'react-router-dom';
 
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
+const ProfileDetails = ({ className,userData,editProduct,collection,...rest }) => {
   const classes = useStyles();
+  const {id}=useParams();
+  const [currentEditData,setCurrentEditData]=useState([]);
+  useEffect(()=>{
+    setCurrentEditData(collection.filter((item)=>item.id==id))
+    console.log("CURRENT EDIT DATA:");
+  },[])
 
-  const {values,errors,handleChange,handleSubmit}=useForm(validateInfo,userData,addProduct)
-
+  const {values,errors,handleChange,handleSubmit}=useForm(validateInfo,userData,editProduct,currentEditData,id)
+  
 
   return (
     <form
@@ -54,6 +49,7 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
+      {console.log("COLLECTION:",collection)}
       <Card>
         <CardHeader
           subheader="Product can Be Edited"
@@ -197,6 +193,8 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
                 helperText={errors.size && errors.size}
               />
             </Grid>
+
+           
             
             <Grid
               item
@@ -289,7 +287,7 @@ const ProfileDetails = ({ className,userData,addProduct,...rest }) => {
             color="primary"
             variant="contained"
           >
-            Add Product
+            Edit Product
           </Button>
         </Box>
       </Card>
@@ -303,11 +301,11 @@ ProfileDetails.propTypes = {
 
 const mapStateToProps=createStructuredSelector({
   userData:selectCurrentUser,
-  
+  collection:getLatestProduct,
 });
 
 const mapDispatchToProps=dispatch=>({
-  addProduct:(collection,userId)=>dispatch(ProductCollectionsAddStart(collection,userId))
+  editProduct:(userId,collection,dataId)=>dispatch(ProductCollectionsEditStart(userId,collection,dataId))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ProfileDetails);

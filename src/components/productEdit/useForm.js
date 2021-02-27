@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-const useForm=(validateInfo,userData,addProduct)=>{
+const useForm=(validateInfo,userData,editProduct,editData,dataId)=>{
     const [values,setValue]=useState({
         companyName:'',
         name:'',
@@ -15,6 +15,14 @@ const useForm=(validateInfo,userData,addProduct)=>{
         mrp:'',
         discount:'',
     })
+
+    useEffect(()=>{
+        console.log(editData);
+        if(editData[0]){
+            setValue(editData[0])
+        }
+        // setValue(editData[0])
+    },[editData])
 
     const [errors,setErrors]=useState({
     })
@@ -38,7 +46,7 @@ const useForm=(validateInfo,userData,addProduct)=>{
     useEffect(()=>{
         if(Object.keys(errors).length===0 && isSubmitting){
             const id=userData.id;
-            addProduct(values,id);
+            editProduct(id,values,dataId);
             setIsSubmitting(false)
         }
     })

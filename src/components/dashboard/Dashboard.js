@@ -26,19 +26,21 @@ import { mainListItems, secondaryListItems } from '../dashboardListItem/listitem
 import { signOutStart } from '../../redux/user/user.actions';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './../../redux/user/user.selectors';
-import {BrowserRouter as Router,Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import Product from './../../screens/product/Product';
 // import Profile from './../infoscreen/Profile';
 import InfoScreen from './../infoscreen/InfoScreen';
 import ProductForEdit from './../productEdit/InfoScreen';
-
+import { Card, CardContent } from '@material-ui/core';
+import DashOverview from '../dashoverview/DashOverview';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://drpydev.com/">
+        Skill Share
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -125,13 +127,13 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+
 }));
 
 
-
-
-
 function Dashboard({ currentUser, hidden, signOutStart }) {
+  
+  const history=useHistory();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -141,6 +143,14 @@ function Dashboard({ currentUser, hidden, signOutStart }) {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const LogOut=(e)=>{
+    history.push("/signin");
+    signOutStart();
+    
+  }
+
+
 
   return (
     <Router>
@@ -160,9 +170,9 @@ function Dashboard({ currentUser, hidden, signOutStart }) {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Dashboard
           </Typography>
-            <IconButton onClick={signOutStart} color="inherit">
+            <IconButton onClick={LogOut} color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+                <ExitToAppIcon />
               </Badge>
             </IconButton>
           </Toolbar>
@@ -182,14 +192,17 @@ function Dashboard({ currentUser, hidden, signOutStart }) {
           <Divider />
           <List>{mainListItems}</List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          {/* <List>{secondaryListItems}</List> */}
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <Route path="/home" exact component={Product} />
-            <Route path="/home/add" component={InfoScreen}/>
-            <Route path="/home/edit/:id" component={ProductForEdit} />
+            <Switch>
+            <Route path="/" exact component={DashOverview} />
+            <Route exact path="/products"  component={Product} />
+            <Route exact path="/products/add" component={InfoScreen}/>
+            <Route exact path="/products/edit/:id" component={ProductForEdit} />
+            </Switch>
             <Box pt={4}>
               <Copyright />
             </Box>

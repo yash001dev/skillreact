@@ -4,7 +4,7 @@ import { CompanyName, Name, Category, middleCategory, subCategory, price, size, 
 export default function validateInfo(values){
 
 let errors={}
-
+    
     //Company Name
     if(!values.companyName){
         errors.companyName=CompanyName

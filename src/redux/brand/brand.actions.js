@@ -1,58 +1,44 @@
-import ProductActionTypes from "./product.types";
-import firebase from './../../utils/config';
+import BrandActionTypes from "./brand.types";
+import firebase from '../../utils/config';
 import {storage} from '../../utils/config';
 
-export const fetchCollectionStart=()=>({
-    type:ProductActionTypes.FETCH_COLLECTIONS_START,
+export const fetchBrandStart=()=>({
+    type:BrandActionTypes.FETCH_COLLECTIONS_START,
 });
 
-export const fetchCollectionSuccess=data=>({
-    type:ProductActionTypes.FETCH_COLLECTIONS_SUCCESS,
+export const fetchBrandSuccess=data=>({
+    type:BrandActionTypes.FETCH_COLLECTIONS_SUCCESS,
     payload:data
 });
 
-export const fetchCollectionFailure=error=>({
-    type:ProductActionTypes.FETCH_COLLECTIONS_FAILURE,
+export const fetchBrandFailure=error=>({
+    type:BrandActionTypes.FETCH_COLLECTIONS_FAILURE,
     payload:error
 })
 
 export const addItemStart=()=>({
-    type:ProductActionTypes.ADD_ITEM_START,
+    type:BrandActionTypes.ADD_ITEM_START,
 });
 
 export const addItemSuccess=item=>({
-    type:ProductActionTypes.ADD_ITEM_SUCCESS,
+    type:BrandActionTypes.ADD_ITEM_SUCCESS,
     payload:item
 });
 
 export const addItemFailure=error=>({
-    type:ProductActionTypes.ADD_ITEM_SUCCESS,
+    type:BrandActionTypes.ADD_ITEM_SUCCESS,
     payload:error
 });
 
 export const deleteItemStart=()=>({
-    type:ProductActionTypes.DELETE_ITEM_START,
-});
+    type:BrandActionTypes.DELETE_ITEM_START,
+})
 export const deleteItemSuccess=(item)=>({
-    type:ProductActionTypes.DELETE_ITEM_SUCCESS,
+    type:BrandActionTypes.DELETE_ITEM_SUCCESS,
     payload:item
-});
+})
 export const deleteItemFailure=(error)=>({
-    type:ProductActionTypes.FETCH_COLLECTIONS_FAILURE,
-    payload:error
-});
-
-export const editCollectionStart=()=>({
-    type:ProductActionTypes.EDIT_COLLECTIONS_START,
-});
-
-export const editCollectionSuccess=data=>({
-    type:ProductActionTypes.EDIT_COLLECTIONS_SUCCESS,
-    payload:data
-});
-
-export const editCollectionFailure=error=>({
-    type:ProductActionTypes.EDIT_COLLECTIONS_FAILURE,
+    type:BrandActionTypes.FETCH_COLLECTIONS_FAILURE,
     payload:error
 })
 
@@ -121,24 +107,6 @@ export const ProductCollectionsAddStart=(userData,userId,imageInfo,videoInfo)=>{
                 dispatch(addItemFailure(error))
             })
         }, 3000);
-    }
-}
-
-//Edit Products
-export const ProductCollectionsEditStart=(userId,modifiedData,itemId)=>{
-    return dispatch=>{
-        console.log("USERID:",modifiedData)
-        const newReference=firebase.database().ref('companyData').child(userId+'/products'+itemId)
-        dispatch(editCollectionStart());
-        console.log("ADD ITEM START:",userId);
-        newReference.update(modifiedData)
-        .then((data)=>{
-            console.log("Item Edit SuccessFull")
-            dispatch(editCollectionSuccess({modifiedData,itemId}))
-        })
-        .catch((error)=>{
-            dispatch(editCollectionFailure(error))
-        })
     }
 }
 
